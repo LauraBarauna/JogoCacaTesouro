@@ -3,17 +3,35 @@ import java.util.Random;
 public class Tabuleiro {
 
     private char[][] tabuleiro = new char[8][8];
+    private int[] posicaoTesouro;
 
-    private void adicionarTesouro() {
+    private int[] adicionarTesouro() {
         Random rand = new Random();
         int linha = rand.nextInt(8);
         int coluna = rand.nextInt(8);
-        tabuleiro[linha][coluna]='T';
+        return posicaoTesouro = new int[]{linha, coluna};
+    }
+
+    private void preencherTabuleiro() {
+        for (int i = 0; i < tabuleiro.length; i++) {
+            for (int j = 0; j < tabuleiro[i].length; j++) {
+                tabuleiro[i][j] = '-';
+            }
+        }
     }
 
     public void iniciarTabuleiro() {
-
+        preencherTabuleiro();
         adicionarTesouro();
+
+        System.out.println("Tesouro: " + posicaoTesouro[0] + ", " + posicaoTesouro[1]);
+
+        for (int i = 0; i < tabuleiro.length; i++) {
+            for (int j = 0; j < tabuleiro[i].length; j++) {
+                System.out.print(tabuleiro[i][j]);
+            }
+            System.out.println();
+        }
 
     }
 
