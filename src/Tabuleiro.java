@@ -5,11 +5,16 @@ public class Tabuleiro {
     private char[][] tabuleiro = new char[8][8];
     private int[] posicaoTesouro;
 
-    private int[] adicionarTesouro() {
+    private void adicionarTesouro() {
         Random rand = new Random();
-        int linha = rand.nextInt(8);
-        int coluna = rand.nextInt(8);
-        return posicaoTesouro = new int[]{linha, coluna};
+        int linha,coluna;
+
+        do {
+            linha = rand.nextInt(8);
+            coluna = rand.nextInt(8);
+        } while (linha == 0 && coluna == 0);
+
+        this.posicaoTesouro = new int[]{linha, coluna};
     }
 
     private void preencherTabuleiro() {
