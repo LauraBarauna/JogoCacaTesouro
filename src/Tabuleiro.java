@@ -4,13 +4,62 @@ public class Tabuleiro {
 
     private char[][] tabuleiro = new char[8][8];
     private int[] posicaoTesouro;
-    private int[] posicaoJogador;
+
+    private int jogadorLinha = 0;
+    private int jogadorColuna = 0;
+
     private char jogador = 'P';
     private char blank = '-';
+    private char tesouro = 'T';
 
-    public void adicionarJogador(char jogador, int linha, int coluna) {
-        this.tabuleiro[encontrarJogador()[0]][encontrarJogador()[1]] = this.blank;
-        this.tabuleiro[linha][coluna] = jogador;
+    private boolean encontrouTesouro = false;
+
+    private int qtdTentativas = 0;
+
+    public void movimentacaoJogador(String direcao) {
+
+        this.tabuleiro[this.jogadorLinha][this.jogadorColuna] = this.blank;
+
+        switch (direcao) {
+            case "ACIMA":
+                if(this.jogadorLinha == 0) {
+                    System.out.println("OPÇÃO INVÁLIDA!");
+                    break;
+                }
+                this.jogadorLinha--;
+                this.qtdTentativas++;
+                break;
+            case "ABAIXO":
+                if(this.jogadorLinha == 7) {
+                    System.out.println("POSIÇÃO INVÁLIDA!");
+                    break;
+                }
+                this.jogadorLinha++;
+                this.qtdTentativas++;
+                break;
+            case "DIREITA":
+                if(this.jogadorColuna == 7) {
+                    System.out.println("POSIÇÃO INVÁLIDA");
+                    break;
+                }
+                this.jogadorColuna++;
+                this.qtdTentativas++;
+                break;
+            case "ESQUERDA":
+                if(this.jogadorColuna == 0) {
+                    System.out.println("POSIÇÃO INVÁLIDA");
+                    break;
+                }
+                this.jogadorColuna--;
+                this.qtdTentativas++;
+                break;
+            default:
+                System.out.println("NÃO EXISTE ESSA DIREÇÃO");
+                break;
+        }
+
+        this.tabuleiro[this.jogadorLinha][this.jogadorColuna] = this.jogador;
+
     }
 
     private void adicionarTesouro() {
@@ -25,30 +74,14 @@ public class Tabuleiro {
         this.posicaoTesouro = new int[]{linha, coluna};
     }
 
-    public int[] encontrarJogador() {
-        for (int i = 0; i < tabuleiro.length; i++) {
-            for (int j = 0; j < tabuleiro[i].length; j++) {
-                if (tabuleiro[i][j] == this.jogador) {
-                    this.posicaoJogador = new int[]{i, j};
-                    break;
-                }
-            }
-
-        }
-        return this.posicaoJogador;
-    }
-
     public boolean jogoEncerrou() {
-        encontrarJogador();
 
-        boolean acertouTesouro = false;
-
-        if (this.posicaoJogador[0] == this.posicaoTesouro[0] && this.posicaoJogador[1] == this.posicaoTesouro[1]) {
-            acertouTesouro = true;
+        if (this.jogadorLinha == this.posicaoTesouro[0] && this.jogadorColuna == this.posicaoTesouro[1]) {
+            this.encontrouTesouro = true;
+            this.tabuleiro[this.posicaoTesouro[0]][this.posicaoTesouro[1]] = this.tesouro;
         }
 
-        return acertouTesouro;
-
+        return this.encontrouTesouro;
     }
 
 
@@ -63,11 +96,10 @@ public class Tabuleiro {
 
 
     public void mostrarTabuleiro() {
-        encontrarJogador();
-        System.out.println(this.posicaoJogador[0] + " " + this.posicaoJogador[1]);
+
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
-                System.out.print(tabuleiro[i][j]);
+                System.out.print(tabuleiro[i][j] + " ");
             }
             System.out.println();
         }
@@ -77,5 +109,10 @@ public class Tabuleiro {
         preencherTabuleiro();
         adicionarTesouro();
     }
+
+    public int qtdTentativas() {
+        return qtdTentativas;
+    }
+
 
 }
